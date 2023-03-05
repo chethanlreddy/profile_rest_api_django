@@ -1,6 +1,29 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.models import BaseUserManager
+
+class UserProfileManager(BaseUserManager):
+    '''Manager for user Profiles'''
+
+    def create_user(self,email,password=None):
+        ''' create a new user '''
+        if not email:
+            raise ValueError('Enter a valid email')
+        email = self.normalize_email(email)
+        user = self.model(email=email,name=name)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self,email,name,password):
+        '''Creating a new super user '''
+        user = self.create_user(email,name,password)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self._db)
+        return user    
+
 
 class UserProfile(AbstractBaseUser,PermissionsMixin):
     '''Databse model for users in the system'''
@@ -17,11 +40,11 @@ class UserProfile(AbstractBaseUser,PermissionsMixin):
     def get_full_name(self):
         '''Retrives full name'''
         return self.name
-    
+
     def get_short_name(self):
         '''Retrives short name'''
         return self.name
-    
+
     def __str__(self):
         '''Returns string representation of the user'''
         return self.email
