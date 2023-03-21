@@ -16,9 +16,18 @@ class HelloApiView(APIView):
     def post(self,request):
         '''simple post reqest using serializer'''
         seralizer = self.serializer_class(data=request.data)
-        if seralizer.is_valid:
+        if seralizer.is_valid():
             name = seralizer.validated_data.get('name')
             message = {'message':f'hello : {name}'}
             return Response(message)
         else:
             return Response(seralizer.errors,status=status.HTTP_400_BAD_REQUEST)
+        
+    def put(self,request,pk=None):
+        return Response({'message':'put method'})
+    
+    def patch(self,request,pk=None):
+        return Response({'message':'patch'})
+    
+    def delete(self,reqest,pk=None):
+        return Response({'message':'delete'})
