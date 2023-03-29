@@ -10,4 +10,4 @@ urlpatterns = [
     path('hello_view/',views.HelloApiView.as_view()),
     path('',include(router.urls))
 ]
-
+#python
